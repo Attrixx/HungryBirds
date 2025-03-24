@@ -24,7 +24,7 @@ public:
 protected:
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<ULevel> MainMenu;
+	TSoftObjectPtr<UWorld> MainMenu;
 
 	TArray<UTarget*> Targets;
 };
