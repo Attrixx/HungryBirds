@@ -4,8 +4,8 @@
 
 Before building the project, ensure the following are installed:
 
-1. **Unreal Engine 5.4**  
-   Make sure Unreal Engine 5.4 is installed on your system. If it's not, you can download it via the Epic Games Launcher.
+1. **Unreal Engine 5.5**  
+   Make sure Unreal Engine 5.5 is installed on your system. If it's not, you can download it via the Epic Games Launcher.
 
 2. **Windows 10/11**  
    The instructions below are for Windows-based systems.
@@ -56,7 +56,7 @@ After the build process is complete, the executable will be located in a generat
 ### Troubleshooting
 
 - **Unreal Engine Not Found**  
-   If you encounter issues with Unreal Engine not being found during the build, ensure Unreal Engine 5.4 is installed at the default location or update the `build.bat` file with the correct path to your Unreal Engine installation.
+   If you encounter issues with Unreal Engine not being found during the build, ensure Unreal Engine 5.5 is installed at the default location or update the `build.bat` file with the correct path to your Unreal Engine installation.
 
 - **Missing Dependencies**  
    If there are any missing dependencies, the build process will notify you. Make sure your development environment is set up correctly, including the necessary C++ tools.
