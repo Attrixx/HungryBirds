@@ -11,7 +11,7 @@ class UTarget;
 /**
  *
  */
-UCLASS()
+UCLASS(Abstract)
 class HUNGRYBIRDS_API ALevelBase : public AGameModeBase
 {
 	GENERATED_BODY()
