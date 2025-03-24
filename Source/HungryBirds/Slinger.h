@@ -9,7 +9,7 @@
 class UInputAction;
 struct FInputActionValue;
 
-UCLASS()
+UCLASS(Abstract)
 class HUNGRYBIRDS_API ASlinger : public APawn
 {
 	GENERATED_BODY()

@@ -6,8 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "BirdBase.generated.h"
 
-class UInputAction;
-
 UCLASS(Abstract)
 class HUNGRYBIRDS_API ABirdBase : public APawn
 {
@@ -16,14 +14,8 @@ class HUNGRYBIRDS_API ABirdBase : public APawn
 protected:
 
 	ABirdBase();
-	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
+public:
 
 	virtual void OnSpecial() PURE_VIRTUAL(&ABirdBase::OnSpecial, )
-
-protected:
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UInputAction> SpecialAction;
 };

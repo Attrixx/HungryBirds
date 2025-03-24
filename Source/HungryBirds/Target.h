@@ -8,7 +8,7 @@
 
 class ALevelBase;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HUNGRYBIRDS_API UTarget : public UActorComponent
 {
 	GENERATED_BODY()
@@ -18,7 +18,7 @@ protected:
 	UTarget();
 	void BeginPlay() override;
 
-public:	
+public:
 
 	void Hit();
 
