@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "LevelBase.h"
+#include "GameManagerSubsystem.h"
 #include <Logging/StructuredLog.h>
 
 DEFINE_LOG_CATEGORY_STATIC(LevelBase, Log, All);

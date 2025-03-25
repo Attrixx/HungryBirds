@@ -1,0 +1,31 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "GameManagerSubsystem.generated.h"
+
+class USaveData;
+
+UCLASS()
+class HUNGRYBIRDS_API UGameManagerSubsystem : public UGameInstanceSubsystem
+{
+    GENERATED_BODY()
+
+public:
+
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual void Deinitialize() override;
+
+	void RegisterHighScore(uint32 Level, uint8 Score);
+
+private:
+
+	bool DataCheck();
+	void LoadGame();
+	void SaveGame();
+
+private:
+
+    UPROPERTY()
+	USaveData* SaveData;
+};
