@@ -5,6 +5,7 @@
 #include <Logging/StructuredLog.h>
 #include <Kismet/GameplayStatics.h>
 #include <EnhancedInputComponent.h>
+#include <EnhancedInputSubsystems.h>
 
 DEFINE_LOG_CATEGORY_STATIC(DefaultPlayerController, Log, All);
 
@@ -12,14 +13,7 @@ void ADefaultPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	APlayerController* playerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	if (!playerController)
-	{
-		UE_LOGFMT(DefaultPlayerController, Error, "Could not get PlayerController");
-		return;
-	}
-
-	UEnhancedInputComponent* eic = Cast<UEnhancedInputComponent>(playerController->InputComponent);
+	UEnhancedInputComponent* eic = Cast<UEnhancedInputComponent>(InputComponent);
 	if (!eic)
 	{
 		UE_LOGFMT(DefaultPlayerController, Error, "Could not cast EnhancedInputComponent");
@@ -27,6 +21,12 @@ void ADefaultPlayerController::BeginPlay()
 	}
 
 	eic->BindAction(SpecialAction, ETriggerEvent::Triggered, this, &ADefaultPlayerController::OnSpecial);
+
+	if (auto* inputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		inputSubsystem->AddMappingContext(IMC, 0);
+		UE_LOGFMT(DefaultPlayerController, Log, "Inputs enabled.");
+	}
 }
 
 void ADefaultPlayerController::OnSpecial()
