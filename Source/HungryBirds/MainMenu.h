@@ -17,5 +17,5 @@ class HUNGRYBIRDS_API AMainMenu : public AGameModeBase
 protected:
 
 	UPROPERTY(EditAnywhere)
-	TArray<TObjectPtr<ULevel>> Levels;
+	TArray<TSoftObjectPtr<UWorld>> Levels;
 };
