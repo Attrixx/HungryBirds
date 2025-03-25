@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "DefaultPlayerController.generated.h"
 
+class UInputMappingContext;
 class UInputAction;
 
 /**
@@ -25,6 +26,9 @@ private:
 	void OnSpecial();
 
 protected:
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UInputMappingContext> IMC;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UInputAction> SpecialAction;
