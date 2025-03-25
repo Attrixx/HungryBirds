@@ -27,7 +27,7 @@ private:
 
 protected:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	TSoftObjectPtr<UWorld> MainMenu;
 
 	TArray<UTarget*> Targets;

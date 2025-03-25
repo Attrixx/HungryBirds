@@ -6,8 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "Slinger.generated.h"
 
-class UInputAction;
 struct FInputActionValue;
+class ABirdBase;
+class UInputAction;
 
 UCLASS(Abstract)
 class HUNGRYBIRDS_API ASlinger : public APawn
@@ -21,14 +22,36 @@ protected:
 
 private:
 
+	void OnAimStart();
+	void OnAimEnd();
 	void OnAimDirection(const FInputActionValue& value);
 	void OnAimForce(const FInputActionValue& value);
 
 protected:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditInstanceOnly)
+	TArray<TSubclassOf<ABirdBase>> Birds;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UInputAction> AimHoldAction;
+
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> AimDirectionAction;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> AimForceAction;
+
+	// Spawn points of birds
+	UPROPERTY(VisibleDefaultsOnly)
+	TObjectPtr<USceneComponent> SpawnPoint;
+
+	UPROPERTY(EditAnywhere)
+	float MaxDistance = 100.f;
+
+	UPROPERTY(EditAnywhere)
+	float ForceMultiplier = 100.f;
+
+private:
+
+	TObjectPtr<ABirdBase> SpawnedBird;
 };

@@ -27,9 +27,9 @@ private:
 
 protected:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputMappingContext> IMC;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> SpecialAction;
 };

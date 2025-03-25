@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "BirdBase.generated.h"
 
 UCLASS(Abstract)
-class HUNGRYBIRDS_API ABirdBase : public APawn
+class HUNGRYBIRDS_API ABirdBase : public ACharacter
 {
 	GENERATED_BODY()
 
