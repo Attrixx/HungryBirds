@@ -5,6 +5,7 @@
 #include <Components/CapsuleComponent.h>
 #include <EnhancedInputComponent.h>
 #include <Logging/StructuredLog.h>
+#include <GameFramework/ProjectileMovementComponent.h>
 
 DEFINE_LOG_CATEGORY_STATIC(Slinger, Log, All);
 
@@ -49,10 +50,9 @@ void ASlinger::OnAimStart()
 	}
 
 	auto& thisTransform = SpawnPoint->GetComponentTransform();
-	FVector spawnLoc = thisTransform.GetLocation() - thisTransform.GetUnitAxis(EAxis::Y) * DistanceClamp.X;
+	FVector spawnLoc = thisTransform.GetLocation() - thisTransform.GetUnitAxis(EAxis::X) * DistanceClamp.X;
 
 	SpawnedBird = GetWorld()->SpawnActor<ABirdBase>(Birds[0], spawnLoc, thisTransform.GetRotation().Rotator());
-	SpawnedBird->GetCapsuleComponent()->SetSimulatePhysics(false);
 }
 
 void ASlinger::OnAimEnd()
@@ -66,8 +66,9 @@ void ASlinger::OnAimEnd()
 	const FVector thisLoc = SpawnPoint->GetComponentLocation();
 	const FVector birdLoc = SpawnedBird->GetActorLocation();
 	const FVector diff = thisLoc - birdLoc;
+	const float speed = diff.Length();
 
-	if (FMath::IsNearlyEqual(diff.SizeSquared(), FMath::Square(DistanceClamp.X), UE_DOUBLE_KINDA_SMALL_NUMBER))
+	if (FMath::IsNearlyEqual(speed, DistanceClamp.X, UE_DOUBLE_KINDA_SMALL_NUMBER))
 	{
 		SpawnedBird->Destroy();
 		SpawnedBird = nullptr;
@@ -75,8 +76,8 @@ void ASlinger::OnAimEnd()
 	}
 
 	Birds.RemoveAt(0);
-	SpawnedBird->GetCapsuleComponent()->SetSimulatePhysics(true);
-	SpawnedBird->LaunchCharacter(diff * ForceMultiplier, true, true);
+	SpawnedBird->Movement->Velocity = diff * ForceMultiplier;
+	SpawnedBird->Movement->Activate();
 	SpawnedBird = nullptr;
 }
 

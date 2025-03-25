@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "BirdBase.generated.h"
 
+class UProjectileMovementComponent;
+
 UCLASS(Abstract)
-class HUNGRYBIRDS_API ABirdBase : public ACharacter
+class HUNGRYBIRDS_API ABirdBase : public APawn
 {
 	GENERATED_BODY()
 
@@ -17,5 +19,10 @@ protected:
 
 public:
 
-	virtual void OnSpecial() PURE_VIRTUAL(&ABirdBase::OnSpecial, )
+	virtual void OnSpecial() PURE_VIRTUAL(&ABirdBase::OnSpecial, );
+
+public:
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UProjectileMovementComponent> Movement;
 };
