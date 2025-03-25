@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{352C3DE0-4770-9A02-1CC8-1A9D7B5ECED3}",
+	"EngineAssociation": "5.5",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -21,6 +21,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "FieldSystemPlugin",
+			"Enabled": true
 		}
 	]
 }
