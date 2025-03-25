@@ -44,12 +44,14 @@ void ASlinger::OnAimStart()
 
 	if (Birds.IsEmpty())
 	{
-		UE_LOGFMT(Slinger, Error, "No birds");
+		UE_LOGFMT(Slinger, Error, "No bird");
 		return;
 	}
 
-	UClass* birdClass = Birds[0];
-	SpawnedBird = GetWorld()->SpawnActor<ABirdBase>(birdClass, SpawnPoint->GetComponentTransform());
+	auto& thisTransform = SpawnPoint->GetComponentTransform();
+	FVector spawnLoc = thisTransform.GetLocation() - thisTransform.GetUnitAxis(EAxis::Y) * DistanceClamp.X;
+
+	SpawnedBird = GetWorld()->SpawnActor<ABirdBase>(Birds[0], spawnLoc, thisTransform.GetRotation().Rotator());
 	SpawnedBird->GetCapsuleComponent()->SetSimulatePhysics(false);
 }
 
@@ -65,7 +67,7 @@ void ASlinger::OnAimEnd()
 	const FVector birdLoc = SpawnedBird->GetActorLocation();
 	const FVector diff = thisLoc - birdLoc;
 
-	if (diff.IsNearlyZero())
+	if (FMath::IsNearlyEqual(diff.SizeSquared(), FMath::Square(DistanceClamp.X), UE_DOUBLE_KINDA_SMALL_NUMBER))
 	{
 		SpawnedBird->Destroy();
 		SpawnedBird = nullptr;
@@ -92,10 +94,10 @@ void ASlinger::OnAimDirection(const FInputActionValue& value)
 	(birdLoc - thisLoc).ToDirectionAndLength(dir, len);
 
 	dir += birdQuat.GetRightVector() * direction.X;
-	dir += birdQuat.GetUpVector() * direction.Y;
+	dir -= birdQuat.GetUpVector() * direction.Y;
 
 	const FVector newBirdLoc = thisLoc + dir.GetSafeNormal() * len;
-	const FQuat newBirdQuat = FRotationMatrix::MakeFromXZ(dir, SpawnPoint->GetUpVector()).ToQuat();
+	const FQuat newBirdQuat = FRotationMatrix::MakeFromXZ(-dir, SpawnPoint->GetUpVector()).ToQuat();
 
 	SpawnedBird->SetActorLocation(newBirdLoc);
 	SpawnedBird->SetActorRotation(newBirdQuat);
@@ -112,16 +114,8 @@ void ASlinger::OnAimForce(const FInputActionValue& value)
 
 	FVector dir; float len;
 	(birdLoc - thisLoc).ToDirectionAndLength(dir, len);
+	len = FMath::Clamp(len + force, DistanceClamp.X, DistanceClamp.Y);
 
-	if (len < UE_KINDA_SMALL_NUMBER)
-	{
-		SpawnedBird->SetActorLocation(thisLoc + FVector{0.f, force, 0.f});
-		SpawnedBird->SetActorRotation(FRotator{});
-	}
-	else
-	{
-		len = FMath::Min(len + force, MaxDistance);
-		const FVector newBirdLoc = thisLoc + dir * len;
-		SpawnedBird->SetActorLocation(newBirdLoc);
-	}
+	const FVector newBirdLoc = thisLoc + dir * len;
+	SpawnedBird->SetActorLocation(newBirdLoc);
 }

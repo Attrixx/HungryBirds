@@ -46,7 +46,7 @@ protected:
 	TObjectPtr<USceneComponent> SpawnPoint;
 
 	UPROPERTY(EditAnywhere)
-	float MaxDistance = 100.f;
+	FVector2D DistanceClamp = {1., 60.};
 
 	UPROPERTY(EditAnywhere)
 	float ForceMultiplier = 100.f;
