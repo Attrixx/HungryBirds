@@ -19,6 +19,7 @@ protected:
 
 	ASlinger();
 	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void Tick(float dt) override;
 
 private:
 

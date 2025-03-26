@@ -6,12 +6,14 @@
 #include <EnhancedInputComponent.h>
 #include <Logging/StructuredLog.h>
 #include <GameFramework/ProjectileMovementComponent.h>
+#include <Kismet/GameplayStatics.h>
 
 DEFINE_LOG_CATEGORY_STATIC(Slinger, Log, All);
 
 ASlinger::ASlinger()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
 	SpawnPoint = CreateDefaultSubobject<USceneComponent>("SpawnPoint");
@@ -35,6 +37,34 @@ void ASlinger::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	eic->BindAction(AimForceAction, ETriggerEvent::Triggered, this, &ASlinger::OnAimForce);
 }
 
+void ASlinger::Tick(float dt)
+{
+	Super::Tick(dt);
+
+	if (!SpawnedBird)
+	{
+		UE_LOGFMT(Slinger, Error, "Tick called without bird");
+		return;
+	}
+
+
+	const FVector thisLoc = SpawnPoint->GetComponentLocation();
+	const FVector birdLoc = SpawnedBird->GetActorLocation();
+	const FVector diff = thisLoc - birdLoc;
+	const float speed = diff.Length();
+
+	if (FMath::IsNearlyEqual(speed, DistanceClamp.X, UE_DOUBLE_KINDA_SMALL_NUMBER))
+	{
+		return;
+	}
+
+	FPredictProjectilePathParams predictParams(0.f, birdLoc, diff * ForceMultiplier, 10.f, ECC_Visibility, SpawnedBird);
+	predictParams.DrawDebugType = EDrawDebugTrace::ForOneFrame;
+
+	FPredictProjectilePathResult predictResult;
+	UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, predictResult);
+}
+
 void ASlinger::OnAimStart()
 {
 	if (SpawnedBird)
@@ -53,6 +83,7 @@ void ASlinger::OnAimStart()
 	FVector spawnLoc = thisTransform.GetLocation() - thisTransform.GetUnitAxis(EAxis::X) * DistanceClamp.X;
 
 	SpawnedBird = GetWorld()->SpawnActor<ABirdBase>(Birds[0], spawnLoc, thisTransform.GetRotation().Rotator());
+	SetActorTickEnabled(true);
 }
 
 void ASlinger::OnAimEnd()
@@ -62,6 +93,8 @@ void ASlinger::OnAimEnd()
 		UE_LOGFMT(Slinger, Error, "Not aiming");
 		return;
 	}
+
+	SetActorTickEnabled(false);
 
 	const FVector thisLoc = SpawnPoint->GetComponentLocation();
 	const FVector birdLoc = SpawnedBird->GetActorLocation();
@@ -95,7 +128,7 @@ void ASlinger::OnAimDirection(const FInputActionValue& value)
 	(birdLoc - thisLoc).ToDirectionAndLength(dir, len);
 
 	dir += birdQuat.GetRightVector() * direction.X;
-	dir -= birdQuat.GetUpVector() * direction.Y;
+	dir += birdQuat.GetUpVector() * direction.Y;
 
 	const FVector newBirdLoc = thisLoc + dir.GetSafeNormal() * len;
 	const FQuat newBirdQuat = FRotationMatrix::MakeFromXZ(-dir, SpawnPoint->GetUpVector()).ToQuat();
