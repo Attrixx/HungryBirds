@@ -9,6 +9,7 @@
 struct FInputActionValue;
 class ABirdBase;
 class UInputAction;
+class USplineComponent;
 
 UCLASS(Abstract)
 class HUNGRYBIRDS_API ASlinger : public APawn
@@ -45,6 +46,9 @@ protected:
 	// Spawn points of birds
 	UPROPERTY(VisibleDefaultsOnly)
 	TObjectPtr<USceneComponent> SpawnPoint;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> SplineComponent;
 
 	UPROPERTY(EditAnywhere)
 	FVector2D DistanceClamp = {1., 60.};

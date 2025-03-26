@@ -16,10 +16,10 @@ class HUNGRYBIRDS_API AMainMenu : public AGameModeBase
 
 public:
 
-	const TArray<TObjectPtr<UWorld>>& GetLevels();
+	const TArray<TSoftObjectPtr<UWorld>>& GetLevels();
 	
 protected:
 
 	UPROPERTY(EditAnywhere)
-	TArray<TObjectPtr<UWorld>> Levels;
+	TArray<TSoftObjectPtr<UWorld>> Levels;
 };

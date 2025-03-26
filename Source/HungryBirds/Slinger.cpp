@@ -7,6 +7,7 @@
 #include <Logging/StructuredLog.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
+#include <Components/SplineComponent.h>
 
 DEFINE_LOG_CATEGORY_STATIC(Slinger, Log, All);
 
@@ -15,9 +16,11 @@ ASlinger::ASlinger()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
-	SpawnPoint = CreateDefaultSubobject<USceneComponent>("SpawnPoint");
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->SetupAttachment(RootComponent);
+	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
+	SplineComponent->SetupAttachment(RootComponent);
 }
 
 void ASlinger::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -59,10 +62,18 @@ void ASlinger::Tick(float dt)
 	}
 
 	FPredictProjectilePathParams predictParams(0.f, birdLoc, diff * ForceMultiplier, 10.f, ECC_Visibility, SpawnedBird);
-	predictParams.DrawDebugType = EDrawDebugTrace::ForOneFrame;
 
 	FPredictProjectilePathResult predictResult;
 	UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, predictResult);
+
+	SplineComponent->ClearSplinePoints(false);
+	for (int32 i = 0; i < predictResult.PathData.Num(); ++i)
+	{
+		FVector location = predictResult.PathData[i].Location;
+		SplineComponent->AddSplinePointAtIndex(location, i, ESplineCoordinateSpace::World, false);
+	}
+
+	SplineComponent->UpdateSpline();
 }
 
 void ASlinger::OnAimStart()

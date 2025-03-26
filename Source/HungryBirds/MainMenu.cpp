@@ -5,7 +5,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(MainMenu, Log, All);
 
-const TArray<TObjectPtr<UWorld>>& AMainMenu::GetLevels()
+const TArray<TSoftObjectPtr<UWorld>>& AMainMenu::GetLevels()
 {
     return Levels;
 }

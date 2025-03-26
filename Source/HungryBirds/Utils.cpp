@@ -4,7 +4,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogUtils, Log, All);
 
-void UUtils::LoadLevel(const TObjectPtr<UWorld>& LevelToLoad, UObject* WorldContext)
+void UUtils::LoadLevel(const TSoftObjectPtr<UWorld>& LevelToLoad, UObject* WorldContext)
 {
 	if (!LevelToLoad)
 	{

@@ -36,6 +36,8 @@ void UGameManagerSubsystem::RegisterHighScore(uint32 Level, uint8 Score)
 	{
 		SaveData->ScoreByLevel.Add(Level, Score);
 	}
+
+	SaveGame();
 }
 
 void UGameManagerSubsystem::LoadGame()

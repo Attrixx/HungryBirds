@@ -6,5 +6,5 @@ class HUNGRYBIRDS_API UUtils
 {
 public:
 
-	static void LoadLevel(const TObjectPtr<UWorld>& LevelToLoad, UObject* WorldContext);
+	static void LoadLevel(const TSoftObjectPtr<UWorld>& LevelToLoad, UObject* WorldContext);
 };

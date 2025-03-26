@@ -20,7 +20,7 @@ void ULevelInstanceWidget::OnLoadButtonClicked()
 	UUtils::LoadLevel(Level, this);
 }
 
-void ULevelInstanceWidget::SetLevel(const TObjectPtr<UWorld> World)
+void ULevelInstanceWidget::SetLevel(const TSoftObjectPtr<UWorld> World)
 {
 	Level = World;
 }
