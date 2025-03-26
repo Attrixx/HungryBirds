@@ -20,6 +20,7 @@ protected:
 
 public:
 
+	UFUNCTION(BlueprintCallable)
 	void Hit();
 
 private:

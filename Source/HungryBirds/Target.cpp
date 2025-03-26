@@ -14,6 +14,8 @@ UTarget::UTarget()
 
 void UTarget::BeginPlay()
 {
+	Super::BeginPlay();
+
 	UWorld* world = GetWorld();
 	if (!world)
 	{
