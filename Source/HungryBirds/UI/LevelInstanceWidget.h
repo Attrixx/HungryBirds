@@ -16,6 +16,7 @@ class HUNGRYBIRDS_API ULevelInstanceWidget : public UUserWidget
 public:
 	
 	UFUNCTION() void OnLoadButtonClicked();
+	void SetLevel(const TObjectPtr<UWorld> World);
 
 protected:
 	
@@ -26,6 +27,6 @@ public:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	UButton* LoadButton;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	TObjectPtr<UWorld> Level;
 };

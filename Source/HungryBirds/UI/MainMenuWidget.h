@@ -8,6 +8,7 @@
 
 class UButton;
 class UPanelWidget;
+class ULevelInstanceWidget;
 
 UCLASS()
 class HUNGRYBIRDS_API UMainMenuWidget : public UUserWidget
@@ -24,9 +25,12 @@ protected:
 
 public:
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	UButton* QuitButton;
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UButton> QuitButton;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	UPanelWidget* LevelListHolder;
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UPanelWidget> LevelListHolder;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ULevelInstanceWidget> LevelWidgetClass;
 };

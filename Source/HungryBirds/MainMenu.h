@@ -13,9 +13,13 @@ UCLASS(Abstract)
 class HUNGRYBIRDS_API AMainMenu : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+
+	const TArray<TObjectPtr<UWorld>>& GetLevels();
 	
 protected:
 
 	UPROPERTY(EditAnywhere)
-	TArray<TSoftObjectPtr<UWorld>> Levels;
+	TArray<TObjectPtr<UWorld>> Levels;
 };

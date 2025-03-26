@@ -20,6 +20,11 @@ void ULevelInstanceWidget::OnLoadButtonClicked()
 	UUtils::LoadLevel(Level, this);
 }
 
+void ULevelInstanceWidget::SetLevel(const TObjectPtr<UWorld> World)
+{
+	Level = World;
+}
+
 void ULevelInstanceWidget::NativeConstruct()
 {
 	Super::NativeConstruct();

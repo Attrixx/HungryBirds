@@ -2,10 +2,15 @@
 
 
 #include "MainMenuWidget.h"
-
-#include "MainMenuWidget.h"
 #include "Components/Button.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include <Logging/StructuredLog.h>
+
+#include "LevelInstanceWidget.h"
+#include "../MainMenu.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogMainMenuWidget, Log, All);
 
 void UMainMenuWidget::NativeConstruct()
 {
@@ -14,6 +19,26 @@ void UMainMenuWidget::NativeConstruct()
 	if (QuitButton)
 	{
 		QuitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnQuitButtonClicked);
+	}
+
+	if (!LevelWidgetClass)
+	{
+		UE_LOGFMT(LogMainMenuWidget, Error, "LevelWidget is nullptr");
+		return;
+	}
+
+	AMainMenu* GameMode = Cast<AMainMenu>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!GameMode)
+	{
+		UE_LOGFMT(LogMainMenuWidget, Error, "Could not retrieve Game Mode");
+		return;
+	}
+
+	for (auto& Level : GameMode->GetLevels())
+	{
+		ULevelInstanceWidget* LevelWidgetInstance = CreateWidget<ULevelInstanceWidget>(GetWorld(), LevelWidgetClass);
+		LevelWidgetInstance->SetLevel(Level);
+		LevelListHolder->AddChild(LevelWidgetInstance);
 	}
 }
 
