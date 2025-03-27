@@ -9,7 +9,7 @@
 struct FInputActionValue;
 class ABirdBase;
 class UInputAction;
-class USplineComponent;
+class UNiagaraComponent;
 
 UCLASS(Abstract)
 class HUNGRYBIRDS_API ASlinger : public APawn
@@ -47,14 +47,23 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 	TObjectPtr<USceneComponent> SpawnPoint;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USplineComponent> SplineComponent;
-
 	UPROPERTY(EditAnywhere)
 	FVector2D DistanceClamp = {1., 60.};
 
 	UPROPERTY(EditAnywhere)
 	float ForceMultiplier = 100.f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UNiagaraComponent> ProjectilePathRenderer;
+
+	UPROPERTY(EditAnywhere)
+	FName NiagaraPositionsVectorName;
+
+	UPROPERTY(EditAnywhere)
+	FName NiagaraProjectilePathDiameterName;
+
+	UPROPERTY(EditAnywhere)
+	float ProjectilePathRadius;
 
 private:
 

@@ -17,7 +17,7 @@ void UGameManagerSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UGameManagerSubsystem::RegisterHighScore(uint32 Level, uint8 Score)
+void UGameManagerSubsystem::RegisterScore(uint32 Level, uint8 Score, bool bSaveWhenDone)
 {
 	if (!DataCheck())
 	{
@@ -26,7 +26,6 @@ void UGameManagerSubsystem::RegisterHighScore(uint32 Level, uint8 Score)
 
 	if (SaveData->ScoreByLevel.Contains(Level))
 	{
-		// Double check just to be safe but should always be true
 		if (SaveData->ScoreByLevel[Level] < Score)
 		{
 			SaveData->ScoreByLevel[Level] = Score;
@@ -37,7 +36,10 @@ void UGameManagerSubsystem::RegisterHighScore(uint32 Level, uint8 Score)
 		SaveData->ScoreByLevel.Add(Level, Score);
 	}
 
-	SaveGame();
+	if (bSaveWhenDone)
+	{
+		SaveGame();
+	}
 }
 
 void UGameManagerSubsystem::LoadGame()

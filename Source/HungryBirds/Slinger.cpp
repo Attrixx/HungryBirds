@@ -7,7 +7,8 @@
 #include <Logging/StructuredLog.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include <Kismet/GameplayStatics.h>
-#include <Components/SplineComponent.h>
+#include <NiagaraComponent.h>
+#include <NiagaraDataInterfaceArrayFunctionLibrary.h>
 
 DEFINE_LOG_CATEGORY_STATIC(Slinger, Log, All);
 
@@ -19,8 +20,8 @@ ASlinger::ASlinger()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->SetupAttachment(RootComponent);
-	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
-	SplineComponent->SetupAttachment(RootComponent);
+	ProjectilePathRenderer = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ProjectilePathRenderer"));
+	ProjectilePathRenderer->SetupAttachment(RootComponent);
 }
 
 void ASlinger::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -58,6 +59,7 @@ void ASlinger::Tick(float dt)
 
 	if (FMath::IsNearlyEqual(speed, DistanceClamp.X, UE_DOUBLE_KINDA_SMALL_NUMBER))
 	{
+		UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector(ProjectilePathRenderer, NiagaraPositionsVectorName, TArray<FVector>{});
 		return;
 	}
 
@@ -66,14 +68,13 @@ void ASlinger::Tick(float dt)
 	FPredictProjectilePathResult predictResult;
 	UGameplayStatics::PredictProjectilePath(GetWorld(), predictParams, predictResult);
 
-	SplineComponent->ClearSplinePoints(false);
-	for (int32 i = 0; i < predictResult.PathData.Num(); ++i)
+	TArray<FVector> locationArray;
+	for (auto& predictPoint : predictResult.PathData)
 	{
-		FVector location = predictResult.PathData[i].Location;
-		SplineComponent->AddSplinePointAtIndex(location, i, ESplineCoordinateSpace::World, false);
+		locationArray.Add(predictPoint.Location);
 	}
 
-	SplineComponent->UpdateSpline();
+	UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector(ProjectilePathRenderer, NiagaraPositionsVectorName, locationArray);
 }
 
 void ASlinger::OnAimStart()
@@ -106,6 +107,7 @@ void ASlinger::OnAimEnd()
 	}
 
 	SetActorTickEnabled(false);
+	UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector(ProjectilePathRenderer, NiagaraPositionsVectorName, TArray<FVector>{});
 
 	const FVector thisLoc = SpawnPoint->GetComponentLocation();
 	const FVector birdLoc = SpawnedBird->GetActorLocation();

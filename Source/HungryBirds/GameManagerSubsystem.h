@@ -15,14 +15,14 @@ public:
 
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
-
-	void RegisterHighScore(uint32 Level, uint8 Score);
+	
+	void RegisterScore(uint32 Level, uint8 Score, bool bSaveWhenDone);
+	void SaveGame();
 
 private:
 
 	bool DataCheck();
 	void LoadGame();
-	void SaveGame();
 
 private:
 
