@@ -17,6 +17,21 @@ void UGameManagerSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
+uint8 UGameManagerSubsystem::GetLevelHighScore(const FString& LevelName)
+{
+	if (!DataCheck())
+	{
+		return 0;
+	}
+
+	if (!SaveData->ScoreByLevel.Contains(LevelName))
+	{
+		return 0;
+	}
+
+	return SaveData->ScoreByLevel[LevelName];
+}
+
 void UGameManagerSubsystem::RegisterScore(FString LevelName, uint8 Score, bool bSaveWhenDone)
 {
 	if (!DataCheck())
