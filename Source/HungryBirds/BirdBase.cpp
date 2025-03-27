@@ -14,11 +14,34 @@ ABirdBase::ABirdBase()
 	Movement = CreateDefaultSubobject<UProjectileMovementComponent>("Movement");
 	Movement->bRotationFollowsVelocity = true;
 	Movement->bAutoActivate = false;
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	Mesh->OnComponentHit.AddDynamic(this, &ABirdBase::OnActorHit);
+
 }
 
 void ABirdBase::Setup(APawn* slinger)
 {
 	Slinger = slinger;
 	Slinger->GetController()->Possess(this);
+}
+
+void ABirdBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector normalImpulse, const FHitResult& Hit)
+{
+	CanUseSpecial = false;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABirdBase::OnTimer, DestroyTimerAfterHit, false);
+
+}
+
+void ABirdBase::EndPlay(EEndPlayReason::Type reason)
+{
+	Super::EndPlay(reason);
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+}
+
+void ABirdBase::OnTimer()
+{
+	GetController()->Possess(Slinger);
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 
