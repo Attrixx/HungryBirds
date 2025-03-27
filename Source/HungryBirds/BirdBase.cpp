@@ -49,7 +49,11 @@ void ABirdBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor
 
 void ABirdBase::OnTimerEnd()
 {
-	GetController()->Possess(Slinger);
+	if (auto* controller = GetController())
+	{
+		controller->Possess(Slinger);
+	}
+
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 

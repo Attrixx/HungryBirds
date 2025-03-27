@@ -8,6 +8,7 @@
 
 class UButton;
 class UTextBlock;
+class UImage;
 
 UCLASS()
 class HUNGRYBIRDS_API ULevelInstanceWidget : public UUserWidget
@@ -30,6 +31,22 @@ public:
 
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	TObjectPtr<UTextBlock> LevelNameHolder;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UTexture2D> EmptyStarTexture;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UTexture2D> FullStarTexture;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UImage> StarImage1;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UImage> StarImage2;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UImage> StarImage3;
+
 
 	UPROPERTY()
 	TSoftObjectPtr<UWorld> Level;

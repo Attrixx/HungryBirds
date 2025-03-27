@@ -16,6 +16,7 @@ public:
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
 	
+	uint8 GetLevelHighScore(const FString& LevelName);
 	void RegisterScore(FString LevelName, uint8 Score, bool bSaveWhenDone);
 	void SaveGame();
 

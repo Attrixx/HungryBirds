@@ -84,7 +84,7 @@ void ASlinger::PossessedBy(AController* newController)
 
 	if (Birds.IsEmpty())
 	{
-		Cast<ALevelBase>(UGameplayStatics::GetGameMode(GetWorld()))->OnLevelEnd();
+		ALevelBase::GetInstance(this)->OnLevelEnd();
 	}
 }
 
