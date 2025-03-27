@@ -20,26 +20,34 @@ ABirdBase::ABirdBase()
 
 }
 
-void ABirdBase::Setup(APawn* slinger)
-{
-	Slinger = slinger;
-	Slinger->GetController()->Possess(this);
-}
-
-void ABirdBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector normalImpulse, const FHitResult& Hit)
-{
-	CanUseSpecial = false;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABirdBase::OnTimer, DestroyTimerAfterHit, false);
-
-}
-
 void ABirdBase::EndPlay(EEndPlayReason::Type reason)
 {
 	Super::EndPlay(reason);
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 }
 
-void ABirdBase::OnTimer()
+void ABirdBase::Setup(APawn* slinger)
+{
+	Slinger = slinger;
+	Slinger->GetController()->Possess(this);
+}
+
+void ABirdBase::ExecuteSpecial()
+{
+	if (SpecialUses > 0)
+	{
+		--SpecialUses;
+		OnSpecial();
+	}
+}
+
+void ABirdBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector normalImpulse, const FHitResult& Hit)
+{
+	SpecialUses = 0;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ABirdBase::OnTimerEnd, DestroyTimerAfterHit, false);
+}
+
+void ABirdBase::OnTimerEnd()
 {
 	GetController()->Possess(Slinger);
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);

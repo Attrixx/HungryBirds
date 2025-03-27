@@ -16,32 +16,39 @@ class HUNGRYBIRDS_API ABirdBase : public APawn
 protected:
 
 	ABirdBase();
+	void EndPlay(EEndPlayReason::Type reason) override;
 
 public:
 
 	void Setup(APawn* slinger);
-	UFUNCTION()
-	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector normalImpulse, const FHitResult& Hit);
-	virtual void OnSpecial() PURE_VIRTUAL(&ABirdBase::OnSpecial, );
-	void EndPlay(EEndPlayReason::Type reason) override;
-private:
-	void OnTimer();
+	void ExecuteSpecial();
 
+protected:
+
+	virtual void OnSpecial() PURE_VIRTUAL(&ABirdBase::OnSpecial, );
+
+private:
+
+	UFUNCTION()
+	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector normalImpulse, const FHitResult& Hit);
+	void OnTimerEnd();
 
 public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> Movement;
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(EditAnywhere)
 	float DestroyTimerAfterHit;
 
+	UPROPERTY(EditAnywhere)
+	int32 SpecialUses = 1;
+
 private:
 
 	APawn* Slinger;
 	FTimerHandle TimerHandle;
-protected:
-	bool CanUseSpecial = true;
 };
