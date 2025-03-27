@@ -6,13 +6,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogUtils, Log, All);
 
 void UUtils::LoadLevel(const TSoftObjectPtr<UWorld>& LevelToLoad, UObject* WorldContext)
 {
-	if (!LevelToLoad)
+	if (LevelToLoad.IsNull())
 	{
 		UE_LOGFMT(LogUtils, Error, "LevelToLoad is not set!");
 		return;
 	}
 
-	FString LevelPath = LevelToLoad->GetOutermost()->GetName();
+	FString LevelPath = LevelToLoad.GetAssetName();
+
 	if (LevelPath.IsEmpty())
 	{
 		UE_LOGFMT(LogUtils, Error, "Invalid LevelToLoad path!");

@@ -13,6 +13,8 @@ void ADefaultPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	bShowMouseCursor = false;
+
 	UEnhancedInputComponent* eic = Cast<UEnhancedInputComponent>(InputComponent);
 	if (!eic)
 	{

@@ -6,23 +6,19 @@
 #include <Engine/LevelStreamingDynamic.h>
 #include <Kismet/GameplayStatics.h>
 #include <Logging/StructuredLog.h>
+#include <Components/TextBlock.h>
 
 DEFINE_LOG_CATEGORY_STATIC(LogLevelInstanceWidget, Log, All);
 
 void ULevelInstanceWidget::OnLoadButtonClicked()
 {
-	if (!Level)
-	{
-		UE_LOGFMT(LogLevelInstanceWidget, Error, "LevelScene is not set!");
-		return;
-	}
-
 	UUtils::LoadLevel(Level, this);
 }
 
 void ULevelInstanceWidget::SetLevel(const TSoftObjectPtr<UWorld> World)
 {
 	Level = World;
+	LevelNameHolder->SetText(FText::FromString(Level.GetAssetName()));
 }
 
 void ULevelInstanceWidget::NativeConstruct()
