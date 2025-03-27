@@ -16,13 +16,15 @@ class HUNGRYBIRDS_API ALevelBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
-public:
+protected:
 
-	void Register(UTarget* target);
-	void Unregister(UTarget* target);
+	void BeginPlay() override;
+	void EndPlay(EEndPlayReason::Type) override;
 
 private:
 
+	void Register(UTarget* target);
+	void Unregister(UTarget* target);
 	void OnLevelEnd();
 
 protected:
@@ -31,4 +33,8 @@ protected:
 	TSoftObjectPtr<UWorld> MainMenu;
 
 	TArray<UTarget*> Targets;
+
+private:
+
+	FDelegateHandle RegHandle, UnregHandle;
 };

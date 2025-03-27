@@ -8,7 +8,7 @@
 
 class UProjectileMovementComponent;
 
-UCLASS(Abstract)
+UCLASS(Abstract, NotBlueprintable)
 class HUNGRYBIRDS_API ABirdBase : public APawn
 {
 	GENERATED_BODY()
