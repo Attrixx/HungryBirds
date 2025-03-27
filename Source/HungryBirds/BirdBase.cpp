@@ -12,4 +12,13 @@ ABirdBase::ABirdBase()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Movement = CreateDefaultSubobject<UProjectileMovementComponent>("Movement");
+	Movement->bRotationFollowsVelocity = true;
+	Movement->bAutoActivate = false;
 }
+
+void ABirdBase::Setup(APawn* slinger)
+{
+	Slinger = slinger;
+	Slinger->GetController()->Possess(this);
+}
+

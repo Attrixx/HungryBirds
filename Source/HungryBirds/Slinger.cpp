@@ -135,6 +135,7 @@ void ASlinger::OnAimEnd()
 	Birds.RemoveAt(0);
 	SpawnedBird->Movement->Velocity = diff * ForceMultiplier;
 	SpawnedBird->Movement->Activate();
+	SpawnedBird->Setup(this);
 	SpawnedBird = nullptr;
 }
 

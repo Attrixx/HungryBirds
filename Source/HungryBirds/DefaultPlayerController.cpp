@@ -31,7 +31,7 @@ void ADefaultPlayerController::BeginPlay()
 
 void ADefaultPlayerController::OnSpecial()
 {
-	if (auto* bird = Cast<ABirdBase>(GetPawn()))
+ 	if (auto* bird = Cast<ABirdBase>(GetPawn()))
 	{
 		UE_LOGFMT(DefaultPlayerController, Log, "Special triggered!");
 		bird->OnSpecial();
