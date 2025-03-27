@@ -19,10 +19,15 @@ protected:
 
 public:
 
+	void Setup(APawn* slinger);
+
 	virtual void OnSpecial() PURE_VIRTUAL(&ABirdBase::OnSpecial, );
 
 public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> Movement;
+
+private:
+	APawn* Slinger;
 };
