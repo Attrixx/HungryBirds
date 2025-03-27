@@ -6,7 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "Target.generated.h"
 
-class ALevelBase;
+DECLARE_MULTICAST_DELEGATE_OneParam(FTargetEvent, UTarget*);
+
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HUNGRYBIRDS_API UTarget : public UActorComponent
@@ -23,8 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Hit();
 
-private:
 
-	UPROPERTY()
-	ALevelBase* Level;
+	static inline FTargetEvent OnTargetCreated;
+	static inline FTargetEvent OnTargetHit;
 };

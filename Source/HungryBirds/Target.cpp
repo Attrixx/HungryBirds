@@ -16,30 +16,10 @@ void UTarget::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UWorld* world = GetWorld();
-	if (!world)
-	{
-		UE_LOGFMT(Target, Error, "Component not spawned in a world!");
-		return;
-	}
-
-	Level = Cast<ALevelBase>(UGameplayStatics::GetGameMode(world));
-	if (!Level)
-	{
-		UE_LOGFMT(Target, Error, "Could not get level game mode!");
-		return;
-	}
-
-	Level->Register(this);
+	OnTargetCreated.Broadcast(this);
 }
 
 void UTarget::Hit()
 {
-	if (!Level)
-	{
-		UE_LOGFMT(Target, Error, "Level not set!");
-		return;
-	}
-
-	Level->Unregister(this);
+	OnTargetHit.Broadcast(this);
 }
