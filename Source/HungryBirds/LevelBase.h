@@ -31,4 +31,8 @@ protected:
 	TSoftObjectPtr<UWorld> MainMenu;
 
 	TArray<UTarget*> Targets;
+
+private:
+
+	int8 currentScore = 0;
 };

@@ -20,4 +20,8 @@ void AMainMenuHUD::BeginPlay()
 
 	MainMenuWidget = CreateWidget<UMainMenuWidget>(GetWorld(), MainMenuWidgetClass);
 	MainMenuWidget->AddToViewport();
+
+	auto* Controller = GetWorld()->GetFirstPlayerController();
+	Controller->bShowMouseCursor = true;
+	Controller->SetInputMode(FInputModeUIOnly{});
 }

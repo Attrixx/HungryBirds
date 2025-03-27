@@ -21,6 +21,7 @@ protected:
 	ASlinger();
 	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void Tick(float dt) override;
+	virtual void PossessedBy(AController* newController) override;
 
 private:
 

@@ -16,7 +16,7 @@ public:
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
 	
-	void RegisterScore(uint32 Level, uint8 Score, bool bSaveWhenDone);
+	void RegisterScore(FString LevelName, uint8 Score, bool bSaveWhenDone);
 	void SaveGame();
 
 private:

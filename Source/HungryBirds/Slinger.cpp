@@ -2,6 +2,7 @@
 
 #include "Slinger.h"
 #include "BirdBase.h"
+#include "LevelBase.h"
 #include <Components/CapsuleComponent.h>
 #include <EnhancedInputComponent.h>
 #include <Logging/StructuredLog.h>
@@ -75,6 +76,16 @@ void ASlinger::Tick(float dt)
 	}
 
 	UNiagaraDataInterfaceArrayFunctionLibrary::SetNiagaraArrayVector(ProjectilePathRenderer, NiagaraPositionsVectorName, locationArray);
+}
+
+void ASlinger::PossessedBy(AController* newController)
+{
+	Super::PossessedBy(newController);
+
+	if (Birds.IsEmpty())
+	{
+		Cast<ALevelBase>(UGameplayStatics::GetGameMode(GetWorld()))->OnLevelEnd();
+	}
 }
 
 void ASlinger::OnAimStart()
