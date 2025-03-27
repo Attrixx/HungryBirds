@@ -5,9 +5,5 @@
 
 void ASpeedBird::OnSpecial()
 {
-	if (!CanUseSpecial)
-		return;
-
-	CanUseSpecial = false;
 	Movement->Velocity = Movement->Velocity.GetSafeNormal() * SpeedScale;
 }
