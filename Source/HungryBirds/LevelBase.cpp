@@ -21,13 +21,13 @@ void ALevelBase::Register(UTarget* target)
 
 void ALevelBase::Unregister(UTarget* target)
 {
-	++currentScore;
-
 	int32 count = Targets.RemoveSwap(target);
 	if (count == 0)
 	{
 		UE_LOGFMT(LevelBase, Warning, "Unregister did not remove any reference!");
 	}
+
+	currentScore += count;
 
 	if (Targets.IsEmpty())
 	{
