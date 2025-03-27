@@ -3,18 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameStateBase.h"
 #include "MainMenu.generated.h"
 
 /**
  * 
  */
 UCLASS(Abstract)
-class HUNGRYBIRDS_API AMainMenu : public AGameModeBase
+class HUNGRYBIRDS_API AMainMenu : public AGameStateBase
 {
 	GENERATED_BODY()
 
 public:
+
+	static AMainMenu* GetInstance(const UObject* worldContext);
 
 	const TArray<TSoftObjectPtr<UWorld>>& GetLevels();
 	

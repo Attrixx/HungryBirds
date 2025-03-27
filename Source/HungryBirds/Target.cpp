@@ -2,7 +2,6 @@
 
 #include "Target.h"
 #include "LevelBase.h"
-#include <Kismet/GameplayStatics.h>
 #include <Logging/StructuredLog.h>
 
 DEFINE_LOG_CATEGORY_STATIC(Target, Log, All);
@@ -16,10 +15,24 @@ void UTarget::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OnTargetCreated.Broadcast(this);
+	if (auto* level = ALevelBase::GetInstance(GetWorld()))
+	{
+		level->Register(this);
+	}
+	else
+	{
+		UE_LOGFMT(Target, Warning, "Could not get level instance");
+	}
 }
 
 void UTarget::Hit()
 {
-	OnTargetHit.Broadcast(this);
+	if (auto* level = ALevelBase::GetInstance(GetWorld()))
+	{
+		level->Unregister(this);
+	}
+	else
+	{
+		UE_LOGFMT(Target, Warning, "Could not get level instance");
+	}
 }

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameStateBase.h"
 #include "LevelBase.generated.h"
 
 class UTarget;
@@ -12,19 +12,17 @@ class UTarget;
  *
  */
 UCLASS(Abstract)
-class HUNGRYBIRDS_API ALevelBase : public AGameModeBase
+class HUNGRYBIRDS_API ALevelBase : public AGameStateBase
 {
 	GENERATED_BODY()
 
-protected:
+public:
 
-	void BeginPlay() override;
-	void EndPlay(EEndPlayReason::Type) override;
-
-private:
+	static ALevelBase* GetInstance(const UObject* worldContext);
 
 	void Register(UTarget* target);
 	void Unregister(UTarget* target);
+
 	void OnLevelEnd();
 
 protected:
@@ -33,8 +31,4 @@ protected:
 	TSoftObjectPtr<UWorld> MainMenu;
 
 	TArray<UTarget*> Targets;
-
-private:
-
-	FDelegateHandle RegHandle, UnregHandle;
 };

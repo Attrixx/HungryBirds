@@ -29,5 +29,6 @@ public:
 	TObjectPtr<UProjectileMovementComponent> Movement;
 
 private:
+
 	APawn* Slinger;
 };

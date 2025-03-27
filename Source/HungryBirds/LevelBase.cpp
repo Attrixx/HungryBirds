@@ -3,23 +3,13 @@
 #include "LevelBase.h"
 #include "Target.h"
 #include <Logging/StructuredLog.h>
+#include <Kismet/GameplayStatics.h>
 
 DEFINE_LOG_CATEGORY_STATIC(LevelBase, Log, All);
 
-void ALevelBase::BeginPlay()
+ALevelBase* ALevelBase::GetInstance(const UObject* worldContext)
 {
-	Super::BeginPlay();
-
-	RegHandle = UTarget::OnTargetCreated.AddUObject(this, &ALevelBase::Register);
-	UnregHandle = UTarget::OnTargetHit.AddUObject(this, &ALevelBase::Unregister);
-}
-
-void ALevelBase::EndPlay(EEndPlayReason::Type reason)
-{
-	Super::EndPlay(reason); 
-
-	UTarget::OnTargetCreated.Remove(RegHandle);
-	UTarget::OnTargetHit.Remove(UnregHandle);
+	return Cast<ALevelBase>(UGameplayStatics::GetGameState(worldContext));
 }
 
 void ALevelBase::Register(UTarget* target)

@@ -2,11 +2,9 @@
 
 
 #include "MainMenuWidget.h"
-#include "Components/Button.h"
+#include <Components/Button.h>
 #include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/GameplayStatics.h"
 #include <Logging/StructuredLog.h>
-
 #include "LevelInstanceWidget.h"
 #include "../MainMenu.h"
 
@@ -27,18 +25,18 @@ void UMainMenuWidget::NativeConstruct()
 		return;
 	}
 
-	AMainMenu* GameMode = Cast<AMainMenu>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (!GameMode)
+	AMainMenu* mainMenu = AMainMenu::GetInstance(GetWorld());
+	if (!mainMenu)
 	{
-		UE_LOGFMT(LogMainMenuWidget, Error, "Could not retrieve Game Mode");
+		UE_LOGFMT(LogMainMenuWidget, Error, "Could not retrieve Game State");
 		return;
 	}
 
-	for (auto& Level : GameMode->GetLevels())
+	for (auto& level : mainMenu->GetLevels())
 	{
-		ULevelInstanceWidget* LevelWidgetInstance = CreateWidget<ULevelInstanceWidget>(GetWorld(), LevelWidgetClass);
-		LevelWidgetInstance->SetLevel(Level);
-		LevelListHolder->AddChild(LevelWidgetInstance);
+		ULevelInstanceWidget* levelWidgetInstance = CreateWidget<ULevelInstanceWidget>(GetWorld(), LevelWidgetClass);
+		levelWidgetInstance->SetLevel(level);
+		LevelListHolder->AddChild(levelWidgetInstance);
 	}
 }
 

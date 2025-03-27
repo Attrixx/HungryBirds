@@ -8,7 +8,7 @@
 
 class UMainMenuWidget;
 
-UCLASS()
+UCLASS(Abstract)
 class HUNGRYBIRDS_API AMainMenuHUD : public AHUD
 {
 	GENERATED_BODY()
