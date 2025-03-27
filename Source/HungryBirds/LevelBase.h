@@ -16,6 +16,10 @@ class HUNGRYBIRDS_API ALevelBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
+public:
+
+	void OnLevelEnd();
+
 protected:
 
 	void BeginPlay() override;
@@ -25,7 +29,6 @@ private:
 
 	void Register(UTarget* target);
 	void Unregister(UTarget* target);
-	void OnLevelEnd();
 
 protected:
 
@@ -34,7 +37,9 @@ protected:
 
 	TArray<UTarget*> Targets;
 
+
 private:
 
+	int8 currentScore = 0;
 	FDelegateHandle RegHandle, UnregHandle;
 };

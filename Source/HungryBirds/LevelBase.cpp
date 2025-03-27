@@ -2,6 +2,8 @@
 
 #include "LevelBase.h"
 #include "Target.h"
+#include "Utils.h"
+#include "GameManagerSubsystem.h"
 #include <Logging/StructuredLog.h>
 
 DEFINE_LOG_CATEGORY_STATIC(LevelBase, Log, All);
@@ -29,6 +31,8 @@ void ALevelBase::Register(UTarget* target)
 
 void ALevelBase::Unregister(UTarget* target)
 {
+	++currentScore;
+
 	int32 count = Targets.RemoveSwap(target);
 	if (count == 0)
 	{
@@ -43,5 +47,7 @@ void ALevelBase::Unregister(UTarget* target)
 
 void ALevelBase::OnLevelEnd()
 {
-	UE_LOGFMT(LevelBase, Log, "Level End");
+	auto GameManager = GetGameInstance()->GetSubsystem<UGameManagerSubsystem>();
+	GameManager->RegisterScore(GetWorld()->GetName(), currentScore, true);
+	UUtils::LoadLevel(MainMenu, GetWorld());
 }

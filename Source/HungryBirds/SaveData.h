@@ -11,5 +11,5 @@ class HUNGRYBIRDS_API USaveData : public USaveGame
 
 public:
     UPROPERTY()
-    TMap<uint32, uint8> ScoreByLevel;
+    TMap<FString, uint8> ScoreByLevel;
 };

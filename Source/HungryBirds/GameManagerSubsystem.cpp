@@ -17,23 +17,23 @@ void UGameManagerSubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UGameManagerSubsystem::RegisterScore(uint32 Level, uint8 Score, bool bSaveWhenDone)
+void UGameManagerSubsystem::RegisterScore(FString LevelName, uint8 Score, bool bSaveWhenDone)
 {
 	if (!DataCheck())
 	{
 		return;
 	}
 
-	if (SaveData->ScoreByLevel.Contains(Level))
+	if (SaveData->ScoreByLevel.Contains(LevelName))
 	{
-		if (SaveData->ScoreByLevel[Level] < Score)
+		if (SaveData->ScoreByLevel[LevelName] < Score)
 		{
-			SaveData->ScoreByLevel[Level] = Score;
+			SaveData->ScoreByLevel[LevelName] = Score;
 		}
 	}
 	else
 	{
-		SaveData->ScoreByLevel.Add(Level, Score);
+		SaveData->ScoreByLevel.Add(LevelName, Score);
 	}
 
 	if (bSaveWhenDone)
