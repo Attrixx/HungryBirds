@@ -153,7 +153,7 @@ void ASlinger::OnAimDirection(const FInputActionValue& value)
 	(birdLoc - thisLoc).ToDirectionAndLength(dir, len);
 
 	dir += birdQuat.GetRightVector() * direction.X;
-	dir += birdQuat.GetUpVector() * direction.Y;
+	dir -= birdQuat.GetUpVector() * direction.Y;
 
 	const FVector newBirdLoc = thisLoc + dir.GetSafeNormal() * len;
 	const FQuat newBirdQuat = FRotationMatrix::MakeFromXZ(-dir, SpawnPoint->GetUpVector()).ToQuat();

@@ -23,5 +23,4 @@ void AMainMenuHUD::BeginPlay()
 
 	auto* Controller = GetWorld()->GetFirstPlayerController();
 	Controller->bShowMouseCursor = true;
-	Controller->SetInputMode(FInputModeUIOnly{});
 }

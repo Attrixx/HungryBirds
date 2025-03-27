@@ -7,6 +7,7 @@
 #include "LevelInstanceWidget.generated.h"
 
 class UButton;
+class UTextBlock;
 
 UCLASS()
 class HUNGRYBIRDS_API ULevelInstanceWidget : public UUserWidget
@@ -24,9 +25,13 @@ protected:
 
 public:
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	UButton* LoadButton;
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UButton> LoadButton;
+
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	TObjectPtr<UTextBlock> LevelNameHolder;
 
 	UPROPERTY()
 	TSoftObjectPtr<UWorld> Level;
+
 };
